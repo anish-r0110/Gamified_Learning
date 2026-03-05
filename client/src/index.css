@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #f8fafc 0%, #ecfeff 100%);
+}
+
+.quest-node-active {
+  animation: quest-pulse 1.8s ease-in-out infinite;
+}
+
+.quest-path-line {
+  background: linear-gradient(180deg, #34d399 0%, #0f766e 50%, #34d399 100%);
+  background-size: 100% 180%;
+  animation: quest-flow 2.4s linear infinite;
+}
+
+.reward-pop {
+  animation: reward-enter 180ms ease-out;
+}
+
+@keyframes quest-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+  }
+}
+
+@keyframes quest-flow {
+  0% {
+    background-position: 0 0%;
+  }
+  100% {
+    background-position: 0 180%;
+  }
+}
+
+@keyframes reward-enter {
+  from {
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
