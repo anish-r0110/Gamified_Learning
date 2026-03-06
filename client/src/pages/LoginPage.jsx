@@ -38,14 +38,15 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
-      <form className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" onSubmit={submit}>
-        <h1 className="mb-1 text-2xl font-bold text-brand">SST Quest Login</h1>
-        <p className="mb-5 text-sm text-slate-500">For students and teachers</p>
+    <main className="app-shell flex items-center justify-center">
+      <form className="app-card w-full max-w-md p-6" onSubmit={submit}>
+        <p className="section-title">Welcome Back</p>
+        <h1 className="mb-1 text-3xl font-bold text-brand">SST Quest Portal</h1>
+        <p className="mb-5 text-sm text-slate-600">Students and teachers use the same gateway.</p>
 
         {isRegister && (
           <input
-            className="mb-3 w-full rounded-lg border p-2"
+            className="input-ui mb-3 w-full p-2.5"
             placeholder="Full name"
             value={form.name}
             onChange={(e) => updateField("name", e.target.value)}
@@ -55,7 +56,7 @@ export default function LoginPage() {
 
         <input
           type="email"
-          className="mb-3 w-full rounded-lg border p-2"
+          className="input-ui mb-3 w-full p-2.5"
           placeholder="Email"
           value={form.email}
           onChange={(e) => updateField("email", e.target.value)}
@@ -64,7 +65,7 @@ export default function LoginPage() {
 
         <input
           type="password"
-          className="mb-3 w-full rounded-lg border p-2"
+          className="input-ui mb-3 w-full p-2.5"
           placeholder="Password"
           value={form.password}
           onChange={(e) => updateField("password", e.target.value)}
@@ -73,7 +74,7 @@ export default function LoginPage() {
 
         {isRegister && (
           <select
-            className="mb-3 w-full rounded-lg border p-2"
+            className="input-ui mb-3 w-full p-2.5"
             value={form.role}
             onChange={(e) => updateField("role", e.target.value)}
           >
@@ -82,15 +83,15 @@ export default function LoginPage() {
           </select>
         )}
 
-        {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
+        {error && <p className="mb-3 rounded-lg border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700">{error}</p>}
 
-        <button className="w-full rounded-lg bg-brand py-2 font-semibold text-white" disabled={loading}>
+        <button className="cta-btn w-full py-2.5 text-sm" disabled={loading}>
           {loading ? "Please wait..." : isRegister ? "Register & Login" : "Login"}
         </button>
 
         <button
           type="button"
-          className="mt-3 text-sm text-slate-600 underline"
+          className="mt-3 text-sm font-semibold text-slate-600 underline"
           onClick={() => setIsRegister((prev) => !prev)}
         >
           {isRegister ? "Have an account? Login" : "Need an account? Register"}

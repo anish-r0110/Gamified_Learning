@@ -132,4 +132,77 @@ router.get("/teacher/students", authMiddleware, requireRole("teacher"), async (_
   }
 });
 
+router.get("/teacher/summary", authMiddleware, requireRole("teacher"), async (_req, res) => {
+  try {
+    const studentCount = await User.countDocuments({ role: "student" });
+    const scores = await Score.find().lean();
+
+    const totalAttempts = scores.length;
+    const passedAttempts = scores.filter((item) => item.passed).length;
+    const totalCorrectAnswers = scores.reduce((acc, item) => acc + Number(item.score || 0), 0);
+    const totalQuestionsAnswered = scores.reduce((acc, item) => acc + Number(item.totalQuestions || 5), 0);
+
+    const passRate = totalAttempts ? Math.round((passedAttempts / totalAttempts) * 100) : 0;
+    const avgScorePercent = totalQuestionsAnswered
+      ? Math.round((totalCorrectAnswers / totalQuestionsAnswered) * 100)
+      : 0;
+
+    const topStudent = await User.findOne({ role: "student" })
+      .select("name email points currentLevel")
+      .sort({ points: -1 })
+      .lean();
+
+    return res.json({
+      studentCount,
+      totalAttempts,
+      passRate,
+      avgScorePercent,
+      topStudent: topStudent
+        ? {
+            id: topStudent._id,
+            name: topStudent.name,
+            email: topStudent.email,
+            points: topStudent.points,
+            currentLevel: topStudent.currentLevel
+          }
+        : null
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch teacher summary.", error: error.message });
+  }
+});
+
+router.get("/teacher/attempts", authMiddleware, requireRole("teacher"), async (req, res) => {
+  try {
+    const requestedLimit = Number(req.query.limit);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.max(1, Math.min(100, Math.trunc(requestedLimit)))
+      : 20;
+
+    const attempts = await Score.find()
+      .populate("student", "name email")
+      .populate("level", "title order")
+      .sort({ updatedAt: -1 })
+      .limit(limit)
+      .lean();
+
+    return res.json(
+      attempts.map((item) => ({
+        id: item._id,
+        studentName: item.student?.name || "Unknown",
+        studentEmail: item.student?.email || "",
+        levelTitle: item.level?.title || "Unknown Level",
+        levelOrder: item.level?.order || null,
+        score: item.score,
+        totalQuestions: item.totalQuestions,
+        passed: item.passed,
+        pointsAwarded: item.pointsAwarded,
+        updatedAt: item.updatedAt
+      }))
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch recent attempts.", error: error.message });
+  }
+});
+
 export default router;

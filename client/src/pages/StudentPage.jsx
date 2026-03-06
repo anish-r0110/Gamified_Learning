@@ -101,15 +101,15 @@ export default function StudentPage() {
 
   return (
     <section>
-      {message && <p className="mb-4 rounded-lg bg-sky-50 p-3 text-sm text-sky-900">{message}</p>}
+      {message && <p className="alert-banner mb-4 rounded-lg p-3 text-sm">{message}</p>}
 
       {!activeLevel && (
         <>
           <Dashboard points={safePoints} badges={safeBadges} progressPercent={progress.progressPercent} />
           <GamificationPanel points={safePoints} badges={safeBadges} scores={safeScores} levelCount={levels.length} />
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Roadmap</p>
+          <section className="panel p-5">
+            <p className="section-title mb-3">Roadmap</p>
             <QuestMap
               levels={levels}
               currentLevelId={null}
@@ -120,30 +120,30 @@ export default function StudentPage() {
             />
           </section>
 
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Performance Log</p>
+          <div className="panel mt-6 p-5">
+            <p className="section-title mb-3">Performance Log</p>
             <Leaderboard scores={safeScores} />
           </div>
         </>
       )}
 
       {activeLevel && (
-        <section className="rounded-2xl border border-slate-200 bg-white p-5">
+        <section className="panel p-5">
           <button
             type="button"
-            className="mb-4 rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700"
+            className="ghost-btn mb-4 px-3 py-1.5 text-sm"
             onClick={() => setActiveLevel(null)}
           >
             Back To Roadmap
           </button>
 
           <div className="mb-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{activeLevel.difficulty}</span>
+            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">{activeLevel.difficulty}</span>
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${mode === tab.key ? "bg-teal-100 text-brand" : "bg-slate-100 text-slate-500"}`}
+                className={`pill-btn px-3 py-1 text-xs ${mode === tab.key ? "pill-btn-active" : ""}`}
                 onClick={() => setMode(tab.key)}
               >
                 {tab.label}
@@ -156,7 +156,7 @@ export default function StudentPage() {
           {mode === "story" && <StoryModePanel story={activeLevel.storyMode} />}
 
           {mode === "learn" && (
-            <div className="mt-5 rounded-xl bg-sky-50 p-4">
+            <div className="mt-5 rounded-xl border border-cyan-200 bg-cyan-50/70 p-4">
               <p className="text-sm text-sky-900">{activeLevel.content}</p>
             </div>
           )}

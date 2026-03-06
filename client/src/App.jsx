@@ -9,6 +9,14 @@ export default function App() {
   const { token, user, setUser, logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark" || saved === "light") return saved;
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  });
 
   useEffect(() => {
     async function hydrate() {
@@ -31,28 +39,51 @@ export default function App() {
     hydrate();
   }, [token]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+
+  const themeToggleButton = (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+    >
+      {theme === "dark" ? "LIGHT MODE" : "DARK MODE"}
+    </button>
+  );
+
   if (!token || !user) {
-    return <LoginPage />;
+    return (
+      <>
+        {themeToggleButton}
+        <LoginPage />
+      </>
+    );
   }
 
   return (
-    <main className="min-h-screen p-6">
-      <div className="mx-auto max-w-5xl rounded-2xl bg-white p-6 shadow-lg">
-        <header className="mb-6 flex items-center justify-between border-b pb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-brand">Gamified SST Learning Platform</h1>
-            <p className="text-sm text-slate-500">Welcome, {user.name}</p>
-          </div>
-          <button className="rounded-lg bg-slate-800 px-4 py-2 text-white" onClick={logout}>
-            Logout
-          </button>
-        </header>
+    <main className="app-shell">
+      {themeToggleButton}
+      <header className="panel mb-6 flex flex-wrap items-center justify-between gap-3 p-4">
+        <div>
+          <p className="section-title">Social Studies Mission Hub</p>
+          <h1 className="text-2xl font-bold text-brand">Gamified SST Learning Platform</h1>
+          <p className="text-sm text-slate-600">Welcome, {user.name}</p>
+        </div>
+        <button className="ghost-btn px-4 py-2 text-sm" onClick={logout}>
+          Logout
+        </button>
+      </header>
 
-        {loading && <p className="mb-4 text-sm text-slate-600">Refreshing profile...</p>}
-        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+      {loading && <p className="mb-4 text-sm text-slate-700">Refreshing profile...</p>}
+      {error && <p className="mb-4 rounded-lg border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700">{error}</p>}
 
-        {user.role === "teacher" ? <TeacherPage /> : <StudentPage />}
-      </div>
+      <section className="w-full">{user.role === "teacher" ? <TeacherPage /> : <StudentPage />}</section>
     </main>
   );
 }

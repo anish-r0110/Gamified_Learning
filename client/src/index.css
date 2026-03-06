@@ -1,10 +1,372 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-top: #fff9e8;
+  --bg-bottom: #d9f6ff;
+  --ink: #1b2938;
+  --muted: #5d6c7d;
+  --line: #d4deea;
+  --surface: #ffffffd9;
+  --surface-strong: #ffffff;
+  --brand: #0b7a75;
+  --brand-strong: #0a615f;
+  --accent: #d96b22;
+  --success: #0f8c56;
+  --warning: #c98911;
+  --danger: #cf3e4f;
+}
+
+[data-theme="dark"] {
+  --bg-top: #0f1520;
+  --bg-bottom: #131c2b;
+  --ink: #dbe6f2;
+  --muted: #9db0c3;
+  --line: #2f4256;
+  --surface: #1a2638e8;
+  --surface-strong: #1f2f46;
+  --brand: #4ad5ce;
+  --brand-strong: #2eb7b0;
+  --accent: #ffb266;
+  --success: #47d194;
+  --warning: #e2bb63;
+  --danger: #ff6d80;
+}
+
 body {
-  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #f8fafc 0%, #ecfeff 100%);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink);
+  background: radial-gradient(circle at 16% 10%, #ffffff 0%, transparent 36%),
+    radial-gradient(circle at 85% 18%, #f6ffe4 0%, transparent 33%),
+    linear-gradient(165deg, var(--bg-top) 0%, var(--bg-bottom) 90%);
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -120px auto auto -120px;
+  width: 360px;
+  height: 360px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #f6ac5f50 0%, transparent 72%);
+  filter: blur(8px);
+  z-index: -1;
+  animation: drift 9s ease-in-out infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: auto -140px -140px auto;
+  width: 380px;
+  height: 380px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #52b6b048 0%, transparent 72%);
+  filter: blur(8px);
+  z-index: -1;
+  animation: drift 11s ease-in-out infinite reverse;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Press Start 2P", "Space Grotesk", sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 1.25rem;
+}
+
+.app-card {
+  background: linear-gradient(160deg, var(--surface) 0%, var(--surface-strong) 70%);
+  border: 2px solid var(--line);
+  border-radius: 0.2rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 0 2px #ffffff47 inset, 6px 6px 0 0 #0a111d3b;
+}
+
+.section-title {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cta-btn {
+  border: 2px solid #063f3c;
+  border-radius: 0.2rem;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+  color: #fff;
+  font-weight: 700;
+  transition: transform 120ms steps(2, end), filter 120ms ease;
+  box-shadow: 3px 3px 0 0 #06282882;
+}
+
+.cta-btn:hover {
+  filter: brightness(1.05);
+  transform: translate(-1px, -1px);
+}
+
+.ghost-btn {
+  border-radius: 0.2rem;
+  border: 2px solid var(--line);
+  background: #ffffffbf;
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: 2px 2px 0 0 #0a111d2e;
+}
+
+.pill-btn {
+  border-radius: 0.25rem;
+  border: 2px solid #d0dae6;
+  background: #eef3f7;
+  color: #5c6773;
+  font-weight: 700;
+}
+
+.pill-btn-active {
+  border-color: #8dd9cb;
+  background: #d7f4ee;
+  color: var(--brand-strong);
+}
+
+.input-ui {
+  border: 2px solid var(--line);
+  border-radius: 0.2rem;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px #ffffff72;
+}
+
+.alert-banner {
+  border: 2px solid #9dd6fb;
+  background: linear-gradient(120deg, #ebf8ff 0%, #e1f8ff 100%);
+  color: #0b5176;
+}
+
+.panel {
+  border: 2px solid var(--line);
+  border-radius: 0.2rem;
+  background: #ffffffd9;
+  box-shadow: 0 0 0 2px #ffffff4f inset, 5px 5px 0 0 #0a111d25;
+}
+
+.scroll-panel {
+  max-height: 32rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.scroll-panel::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scroll-panel::-webkit-scrollbar-thumb {
+  background: #b6c2d2;
+  border-radius: 9999px;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  border: 2px solid var(--line);
+  border-radius: 0.2rem;
+  background: var(--surface-strong);
+  color: var(--ink);
+  padding: 0.65rem 0.75rem;
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 0 #0a111d4a;
+}
+
+[data-theme="dark"] .theme-toggle {
+  box-shadow: 3px 3px 0 0 #020912aa;
+}
+
+.quest-map-canvas {
+  background: linear-gradient(180deg, #fdf8ed 0%, #eef8ff 100%);
+}
+
+.quest-map-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, #d8e4ef88 1px, transparent 1px),
+    linear-gradient(to bottom, #d8e4ef88 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+}
+
+.quest-map-connector {
+  position: absolute;
+  height: 5px;
+  border-radius: 999px;
+  transform-origin: left center;
+  z-index: 1;
+}
+
+.quest-map-connector-open {
+  background: linear-gradient(90deg, #1fb5ae 0%, #0b7a75 100%);
+  box-shadow: 0 0 0 1px #ffffff7f;
+}
+
+.quest-map-connector-locked {
+  background: #afbccd;
+}
+
+.quest-map-node {
+  position: absolute;
+  z-index: 2;
+  width: 190px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #2e4155;
+  border-radius: 0.2rem;
+  padding: 0.7rem;
+  text-align: left;
+  line-height: 1.5;
+  box-shadow: 4px 4px 0 0 #0b13215e;
+}
+
+.quest-map-node-label {
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  border-radius: 0.15rem;
+  border: 2px solid #294152;
+  background: #d8f9f4;
+  padding: 0.2rem 0.35rem;
+  font-size: 9px;
+}
+
+.quest-map-node-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.quest-map-node-subtitle {
+  margin-top: 0.35rem;
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.quest-map-node-open {
+  background: #ffffff;
+  color: #1d2f42;
+}
+
+.quest-map-node-active {
+  background: #d8f4ee;
+  color: #0b5855;
+  animation: quest-pulse 1.8s ease-in-out infinite;
+}
+
+.quest-map-node-locked {
+  background: #ebeff4;
+  color: #8490a0;
+  border-color: #98a7ba;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .quest-map-canvas {
+  background: linear-gradient(180deg, #19283a 0%, #142130 100%);
+}
+
+[data-theme="dark"] .quest-map-grid {
+  background-image: linear-gradient(to right, #2d4057b3 1px, transparent 1px),
+    linear-gradient(to bottom, #2d4057b3 1px, transparent 1px);
+}
+
+[data-theme="dark"] .quest-map-node-open {
+  background: #24374f;
+  color: #dde9f7;
+}
+
+[data-theme="dark"] .quest-map-node-active {
+  background: #1f4c49;
+  color: #c9fff9;
+}
+
+[data-theme="dark"] .quest-map-node-locked {
+  background: #2b3b4d;
+  color: #90a3b9;
+  border-color: #3d526a;
+}
+
+[data-theme="dark"] .quest-map-node-label {
+  background: #29495a;
+  border-color: #3f6a80;
+}
+
+[data-theme="dark"] body {
+  background: radial-gradient(circle at 16% 10%, #2c3b4b 0%, transparent 30%),
+    radial-gradient(circle at 85% 18%, #24352a 0%, transparent 32%),
+    linear-gradient(165deg, var(--bg-top) 0%, var(--bg-bottom) 90%);
+}
+
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-white\/80 {
+  background-color: #1f2f46 !important;
+}
+
+[data-theme="dark"] .bg-slate-50,
+[data-theme="dark"] .bg-slate-100 {
+  background-color: #24364e !important;
+}
+
+[data-theme="dark"] .bg-sky-50,
+[data-theme="dark"] .bg-cyan-50\/70,
+[data-theme="dark"] .bg-emerald-50\/70,
+[data-theme="dark"] .bg-amber-50\/70,
+[data-theme="dark"] .bg-indigo-50\/70 {
+  background-color: #213447 !important;
+}
+
+[data-theme="dark"] .text-slate-900,
+[data-theme="dark"] .text-slate-800,
+[data-theme="dark"] .text-slate-700 {
+  color: #deebf8 !important;
+}
+
+[data-theme="dark"] .text-slate-600,
+[data-theme="dark"] .text-slate-500 {
+  color: #9fb3c8 !important;
+}
+
+[data-theme="dark"] .border-slate-200,
+[data-theme="dark"] .border-slate-300 {
+  border-color: #31455c !important;
+}
+
+[data-theme="dark"] .bg-rose-50 {
+  background-color: #422331 !important;
+}
+
+[data-theme="dark"] .text-rose-700 {
+  color: #ffb6c2 !important;
+}
+
+@media (max-width: 768px) {
+  .quest-map-node {
+    width: 150px;
+    padding: 0.55rem;
+  }
+
+  .quest-map-node-title {
+    font-size: 9px;
+  }
 }
 
 .quest-node-active {
@@ -53,5 +415,17 @@ body {
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(12px, -10px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
