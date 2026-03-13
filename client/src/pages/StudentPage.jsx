@@ -100,15 +100,15 @@ export default function StudentPage() {
   ];
 
   return (
-    <section>
-      {message && <p className="alert-banner mb-4 rounded-lg p-3 text-sm">{message}</p>}
+    <section className="space-y-4">
+      {message && <p className="alert-banner rounded-lg p-2.5 text-sm">{message}</p>}
 
       {!activeLevel && (
         <>
           <Dashboard points={safePoints} badges={safeBadges} progressPercent={progress.progressPercent} />
           <GamificationPanel points={safePoints} badges={safeBadges} scores={safeScores} levelCount={levels.length} />
 
-          <section className="panel p-5">
+          <section className="panel p-4">
             <p className="section-title mb-3">Roadmap</p>
             <QuestMap
               levels={levels}
@@ -120,7 +120,7 @@ export default function StudentPage() {
             />
           </section>
 
-          <div className="panel mt-6 p-5">
+          <div className="panel p-4">
             <p className="section-title mb-3">Performance Log</p>
             <Leaderboard scores={safeScores} />
           </div>
@@ -128,7 +128,7 @@ export default function StudentPage() {
       )}
 
       {activeLevel && (
-        <section className="panel p-5">
+        <section className="panel lesson-shell p-5">
           <button
             type="button"
             className="ghost-btn mb-4 px-3 py-1.5 text-sm"
@@ -137,13 +137,13 @@ export default function StudentPage() {
             Back To Roadmap
           </button>
 
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">{activeLevel.difficulty}</span>
+          <div className="lesson-toolbar mb-4">
+            <span className="lesson-difficulty">{activeLevel.difficulty}</span>
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
-                className={`pill-btn px-3 py-1 text-xs ${mode === tab.key ? "pill-btn-active" : ""}`}
+                className={`lesson-tab ${mode === tab.key ? "lesson-tab-active" : ""}`}
                 onClick={() => setMode(tab.key)}
               >
                 {tab.label}
@@ -151,13 +151,13 @@ export default function StudentPage() {
             ))}
           </div>
 
-          <h2 className="text-xl font-bold text-slate-900">{activeLevel.title}</h2>
+          <h2 className="lesson-title">{activeLevel.title}</h2>
 
           {mode === "story" && <StoryModePanel story={activeLevel.storyMode} />}
 
           {mode === "learn" && (
-            <div className="mt-5 rounded-xl border border-cyan-200 bg-cyan-50/70 p-4">
-              <p className="text-sm text-sky-900">{activeLevel.content}</p>
+            <div className="lesson-content-card mt-4">
+              <p className="text-base text-sky-900">{activeLevel.content}</p>
             </div>
           )}
 
@@ -168,7 +168,7 @@ export default function StudentPage() {
           {mode === "timeline" && <TimelineChallenge challenge={activeLevel.timelineChallenge} />}
 
           {mode === "quiz" && (
-            <div className="mt-5">
+            <div className="mt-4">
               <Quiz level={activeLevel} onSubmit={submitQuiz} submitting={submitting} />
             </div>
           )}

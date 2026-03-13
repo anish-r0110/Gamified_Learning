@@ -9,8 +9,8 @@ function getNodePosition(index, total) {
   const col = index % cols;
   const zigzagCol = row % 2 === 1 ? cols - 1 - col : col;
 
-  const x = 10 + (zigzagCol / Math.max(1, cols - 1)) * 80;
-  const y = 14 + (row / Math.max(1, rows - 1)) * 72;
+  const x = 20 + (zigzagCol / Math.max(1, cols - 1)) * 60;
+  const y = rows === 1 ? 50 : 20 + (row / Math.max(1, rows - 1)) * 60;
   return { x, y };
 }
 
@@ -29,14 +29,33 @@ function getLineStyle(from, to) {
 }
 
 export default function QuestMap({ levels = [], currentLevelId, onSelect }) {
+  if (!levels.length) {
+    return (
+      <section className="quest-map-canvas rounded-xl p-4">
+        <p className="section-title mb-3">Quest Map</p>
+        <div className="quest-map-empty rounded-lg border border-slate-200 p-5">
+          No missions yet. New levels will appear here.
+        </div>
+      </section>
+    );
+  }
+
   const points = levels.map((_level, idx) => getNodePosition(idx, levels.length));
-  const rowCount = Math.ceil(levels.length / Math.min(4, Math.max(levels.length, 1)));
-  const mapHeight = Math.max(300, rowCount * 200);
+  const columns = Math.min(4, levels.length);
+  const rowCount = Math.ceil(levels.length / columns);
+  const mapHeight = Math.max(200, rowCount * 170);
+  const unlockedCount = levels.filter((level) => level.unlocked).length;
 
   return (
-    <section className="quest-map-canvas rounded-lg border border-slate-200 p-4">
-      <p className="section-title mb-3">Quest Map</p>
-      <div className="relative overflow-auto rounded-md border border-slate-200 bg-white/70 p-4" style={{ minHeight: mapHeight }}>
+    <section className="quest-map-canvas rounded-xl p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="section-title">Quest Map</p>
+        <p className="quest-map-meta">
+          {unlockedCount}/{levels.length} unlocked
+        </p>
+      </div>
+
+      <div className="relative overflow-x-auto rounded-lg border border-slate-200 bg-white/70 p-4" style={{ minHeight: mapHeight }}>
         <div className="quest-map-grid" />
 
         {points.slice(0, -1).map((point, idx) => {

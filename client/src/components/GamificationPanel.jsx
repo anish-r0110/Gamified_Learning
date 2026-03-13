@@ -62,54 +62,54 @@ export default function GamificationPanel({ points = 0, scores = [], badges = []
   ];
 
   return (
-    <section className="mb-6 grid gap-4 lg:grid-cols-3">
-      <article className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 to-slate-700 p-4 text-white">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-300">Player Rank</p>
-        <h3 className="mt-1 text-xl font-bold">{rank.name}</h3>
-        <p className="mt-2 text-sm text-slate-200">XP: {points}</p>
-        <div className="mt-2 h-2 w-full rounded-full bg-slate-500/40">
-          <div className="h-2 rounded-full bg-emerald-300" style={{ width: `${rankProgress}%` }} />
+    <section className="gm-panel mb-4">
+      <article className="gm-card gm-rank-card">
+        <p className="gm-label">Player Rank</p>
+        <h3 className="gm-rank-title mt-1">{rank.name}</h3>
+        <p className="gm-note mt-1">XP: {points}</p>
+        <div className="gm-meter mt-2">
+          <div className="gm-meter-fill" style={{ width: `${rankProgress}%` }} />
         </div>
-        <p className="mt-2 text-xs text-slate-300">{rankProgress}% to next tier</p>
+        <p className="gm-note mt-2">{rankProgress}% to next tier</p>
       </article>
 
-      <article className="rounded-2xl border border-slate-200 bg-white p-4">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Active Quests</p>
-        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-          <div className="rounded-xl bg-amber-50 p-3">
-            <p className="text-xs text-slate-500">Current Combo</p>
-            <p className="text-xl font-bold text-amber-700">x{streak}</p>
+      <article className="gm-card">
+        <p className="gm-label">Active Quests</p>
+        <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+          <div className="gm-mini gm-mini-amber">
+            <p className="gm-mini-label">Current Combo</p>
+            <p className="gm-mini-value">x{streak}</p>
           </div>
-          <div className="rounded-xl bg-teal-50 p-3">
-            <p className="text-xs text-slate-500">Perfect Runs</p>
-            <p className="text-xl font-bold text-teal-700">{perfectRuns}</p>
+          <div className="gm-mini gm-mini-teal">
+            <p className="gm-mini-label">Perfect Runs</p>
+            <p className="gm-mini-value">{perfectRuns}</p>
           </div>
         </div>
 
-        <div className={`mt-3 rounded-xl p-3 text-sm ${dailyMissionDone ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-700"}`}>
+        <div className={`gm-status mt-2 ${dailyMissionDone ? "gm-status-ok" : "gm-status-neutral"}`}>
           Daily mission: Pass one quiz today {dailyMissionDone ? "(Completed)" : "(Pending)"}
         </div>
 
-        <div className={`mt-3 rounded-xl p-3 text-sm ${streakExpired ? "bg-rose-100 text-rose-700" : "bg-indigo-100 text-indigo-700"}`}>
+        <div className={`gm-status mt-2 ${streakExpired ? "gm-status-warn" : "gm-status-info"}`}>
           {streak > 0 && !streakExpired && `Streak resets in ${formatDuration(msUntilDecay)} if you do not pass another quiz.`}
           {streak === 0 && !latestPassedAt && "No active streak yet. Pass a quiz to start your combo timer."}
           {streakExpired && "Streak expired after 24h without a pass. Pass a quiz to restart combo."}
         </div>
       </article>
 
-      <article className="rounded-2xl border border-slate-200 bg-white p-4">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Achievements</p>
-        <div className="mt-3 grid gap-2">
+      <article className="gm-card">
+        <p className="gm-label">Achievements</p>
+        <div className="mt-2 grid gap-2">
           {achievements.map((item) => (
             <div
               key={item.id}
-              className={`rounded-xl border px-3 py-2 text-sm ${item.unlocked ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-slate-200 bg-slate-50 text-slate-500"}`}
+              className={`gm-achievement ${item.unlocked ? "gm-achievement-open" : "gm-achievement-locked"}`}
             >
               {item.label}: {item.unlocked ? "Unlocked" : "Locked"}
             </div>
           ))}
         </div>
-        {badges.length > 0 && <p className="mt-3 text-xs text-slate-600">Badge inventory synced: {badges.join(", ")}</p>}
+        {badges.length > 0 && <p className="gm-note mt-2">Badge inventory synced: {badges.join(", ")}</p>}
       </article>
     </section>
   );

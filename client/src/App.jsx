@@ -53,7 +53,8 @@ export default function App() {
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
-      {theme === "dark" ? "LIGHT MODE" : "DARK MODE"}
+      <span className="theme-toggle-text">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+      <span className="theme-toggle-indicator" aria-hidden="true" />
     </button>
   );
 
@@ -69,16 +70,28 @@ export default function App() {
   return (
     <main className="app-shell">
       {themeToggleButton}
-      <header className="panel mb-6 flex flex-wrap items-center justify-between gap-3 p-4">
-        <div>
-          <p className="section-title">Social Studies Mission Hub</p>
-          <h1 className="text-2xl font-bold text-brand">Gamified SST Learning Platform</h1>
-          <p className="text-sm text-slate-600">Welcome, {user.name}</p>
+      <header className="app-topbar">
+        <div className="app-topbar-brand">
+          <span className="app-coin" aria-hidden="true" />
+          <span>LearnQuest</span>
         </div>
-        <button className="ghost-btn px-4 py-2 text-sm" onClick={logout}>
+
+        <nav className="app-topbar-nav" aria-label="Primary">
+          <span>Learn</span>
+          <span>Practice</span>
+          <span>Progress</span>
+        </nav>
+
+        <button className="hero-cta hero-cta-sm" onClick={logout}>
           Logout
         </button>
       </header>
+
+      <section className="hero-banner mb-4">
+        <p className="hero-kicker">Mission Hub</p>
+        <h1 className="hero-title">Gamified SST Learning Platform</h1>
+        <p className="hero-subtitle">Welcome, {user.name}. Continue your social studies quest.</p>
+      </section>
 
       {loading && <p className="mb-4 text-sm text-slate-700">Refreshing profile...</p>}
       {error && <p className="mb-4 rounded-lg border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700">{error}</p>}
