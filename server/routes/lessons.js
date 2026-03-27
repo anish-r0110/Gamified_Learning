@@ -1,6 +1,6 @@
 import express from "express";
-import Level from "../../models/Level.js";
-import Score from "../../models/Score.js";
+import Level from "../models/Level.js";
+import Score from "../models/Score.js";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 
 const router = express.Router();
