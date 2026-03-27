@@ -89,7 +89,7 @@ export default function App() {
 
       <section className="hero-banner mb-4">
         <p className="hero-kicker">Mission Hub</p>
-        <h1 className="hero-title">Gamified SST Learning Platform</h1>
+        <h1 className="hero-title">Gamified Learning Platform</h1>
         <p className="hero-subtitle">Welcome, {user.name}. Continue your social studies quest.</p>
       </section>
 
